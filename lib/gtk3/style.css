@@ -1,0 +1,119 @@
+#main-window {
+  background-color: #000000;
+}
+
+#communication-widget {
+  background-color: #000000;
+}
+
+#info-widget {
+}
+
+#multiple-output-widget {
+  border-right-color: #000000;
+  border-bottom-color: #000000;
+  border-left-color: #000000;
+}
+
+#output-widget {
+  font-size: 20px;
+}
+
+#output-widget * {
+  background-color: #000000;
+  color: #eeeeee;
+  -GtkView-cursor-color: #a0a0a0;
+}
+
+#output-widget-container .overshoot {
+	background: none;
+}
+
+#prompt-widget #output-widget {
+  color: #a0a0a0;
+  font-size: 20px;
+  padding-bottom: 7px;
+}
+
+#prompt-widget #input {
+  background: #000000;
+  color: #a0a0a0;
+  -GtkView-cursor-color: #ffffff;
+  border: none;
+  box-shadow: none;
+  font-size: 20px;
+}
+
+#output-widget *:selected, #prompt-widget #input:selected {
+  background-color: #777777;
+  color: #ffffff;
+}
+
+trough {
+  background-color: #000000;
+}
+
+progressbar {
+  border: 1px solid #404040;
+}
+
+progressbar progress {
+  min-height: 30px;
+  border: none;
+}
+
+progressbar.health progress {
+  background-color: #bb0000;
+}
+
+progressbar.mana progress {
+  background-color: #0000aa;
+}
+
+progressbar.moves progress {
+  background-color: #00aa00;
+}
+
+progressbar.exp progress {
+  background-color: #cccccc;
+}
+
+progressbar trough {
+  min-height: 30px;
+  border: none;
+  background-color: #202020;
+}
+
+label.progress-bar {
+  color: #ffffff;
+  font-size: 18pt;
+}
+
+label.name {
+  color: #f0f0f0;
+  font-size: 16pt;
+}
+
+label.class {
+  color: #f0f0f0;
+  font-size: 14pt;
+  margin-bottom: 10px;
+}
+
+label.gold {
+  margin-top: 10px;
+}
+
+label.info {
+  color: #f0f0f0;
+  font-size: 14pt;
+}
+
+label.room-name {
+  margin-top: 12px;
+  font-weight: bold;
+}
+
+label.exit {
+  font-size: 12pt;
+}
