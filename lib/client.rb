@@ -3,6 +3,7 @@ require 'rbcl/lib/mud_connection'
 module RbCl
   class Client
     attr_reader :ui
+    attr_accessor :buffer_last_line
 
     def initialize(ui)
       @ui = ui
@@ -74,11 +75,14 @@ module RbCl
         end
       end
 
-      if @mud_output_buffer.rindex("\n")
+      if @mud_output_buffer.rindex("\n") && @buffer_last_line
         @ui.print(@mud_output_buffer[0 .. @mud_output_buffer.rindex("\n")])
         @last_line = @mud_output_buffer[@mud_output_buffer.rindex("\n") .. -1]
-        @mud_output_buffer = ''
+      else
+        @ui.print(@mud_output_buffer)
       end
+      
+      @mud_output_buffer = ''
     end
 
     # finds first trigger that starts in the buffer
