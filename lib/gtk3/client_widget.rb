@@ -28,6 +28,10 @@ module RbCl
         pack_end(@info_widget, fill: true, shrink: false)
       end
 
+      def info
+        @info_widget
+      end
+
       def client=(c)
         @client = c
         @communication_widget.client = @client
@@ -68,18 +72,6 @@ module RbCl
 
       def char_base=(data)
         @info_widget.char_base = data
-      end
-
-      def char_status=(data)
-        @info_widget.char_status = data
-      end
-
-      def char_worth=(data)
-        @info_widget.char_worth = data
-      end
-
-      def room_info=(data)
-        @info_widget.room_info = data
       end
 
       def map_text=(text)

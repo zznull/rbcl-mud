@@ -33,19 +33,10 @@ module RbCl
         pack_start(@moves_progress_bar)
         pack_start(@exp_progress_bar)
 
-        @exp_label = Gtk::Label.new
-        @exp_label.style_context.add_provider(css_provider, 800)
-        @exp_label.style_context.add_class('info')
-        @exp_label.style_context.add_class('exp')
-        @exp_label.xalign = 0
-        pack_start(@exp_label)
-
-        @gold_label = Gtk::Label.new
-        @gold_label.style_context.add_provider(css_provider, 800)
-        @gold_label.style_context.add_class('info')
-        @gold_label.style_context.add_class('gold')
-        @gold_label.xalign = 0
-        pack_start(@gold_label)
+        @labels = {}
+        @labels_box = Gtk::Box.new(:vertical)
+        @labels_box.show
+        pack_start(@labels_box)
 
         @room_name_label = Gtk::Label.new
         @room_name_label.style_context.add_provider(css_provider, 800)
@@ -66,9 +57,20 @@ module RbCl
         @class_label.show
       end
 
-      def char_status=(status)
-        @exp_label.markup = "Exp tnl: <span weight=\"bold\">#{status['tnl']}</span>"
-        @exp_label.show
+      def add_label(name)
+        label = Gtk::Label.new
+        label.style_context.add_provider(css_provider, 800)
+        label.style_context.add_class('info')
+        label.xalign = 0
+        @labels[name] = label
+        @labels_box.pack_start(label)
+      end
+
+      def set_label(name, value)
+        if @labels[name]
+          @labels[name].markup = value
+          @labels[name].show
+        end
       end
 
       def char_vitals=(vitals)
@@ -83,43 +85,10 @@ module RbCl
         @moves_progress_bar.max = maxstats['maxmoves'] if maxstats['maxmoves']
       end
 
-      def char_worth=(worth)
-        @gold_label.markup = "Gold: <span weight=\"bold\" color=\"gold\">#{worth['gold']}</span> (bank: #{worth['bank']})"
-        @gold_label.show
-      end
-
-      def char_exp=(exp)
-        @exp_progress_bar.value = exp
-      end
-
-      def char_max_exp=(max_exp)
-        @exp_progress_bar.max = max_exp
-      end
-
-      def room_info=(info)
-        # @room_name_label.text = info['name']
-        # @room_name_label.show
-
-        # @exits_box.children.each { |child| @exits_box.remove(child) }
-        # info['exits'].each_pair do ||
-        # end
-      end
-
       def map_text=(text)
         @map_widget.clear
         @map_widget.print(text)
         @map_widget.show
-      end
-
-      protected
-
-      def add_room_label(exit, name)
-        label = Gtk::Label.new
-        label.style_context.add_provider(css_provider, 800)
-        label.style_context.add_class('info')
-        label.style_context.add_class('exit')
-        label.xalign = 0 
-        @exits_box.pack_start(label)
       end
     end
   end

@@ -3,7 +3,7 @@ require 'rbcl/lib/mud_connection'
 module RbCl
   class Client
     attr_reader :ui
-    attr_accessor :buffer_last_line
+    attr_accessor :buffer_last_line, :gmcp_block
 
     def initialize(ui)
       @ui = ui
@@ -17,6 +17,8 @@ module RbCl
       @current_trigger = nil
 
       @last_line = nil
+
+      @gmcp_triggers = {}
     end
 
     def self.load(mud_file_path, ui)
@@ -81,7 +83,7 @@ module RbCl
       else
         @ui.print(@mud_output_buffer)
       end
-      
+
       @mud_output_buffer = ''
     end
 
@@ -110,6 +112,10 @@ module RbCl
         end_str: end_str,
         block: block
       }
+    end
+
+    def add_gmcp_trigger(package, &block)
+      @gmcp_triggers[package.downcase] = block
     end
 
     # prints text to the debug console
@@ -161,13 +167,9 @@ module RbCl
         @ui.char_maxstats = data
       when 'char.base'
         @ui.char_base = data
-      when 'char.status'
-        @ui.char_status = data
-      when 'char.worth'
-        @ui.char_worth = data
-      when 'room.info'
-        @ui.room_info = data
       end
+
+      @gmcp_triggers[package.downcase].call(data) if @gmcp_triggers[package.downcase]
     end
 
     def handle_internal_command(command)

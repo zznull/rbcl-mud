@@ -101,24 +101,7 @@ label.class {
   margin-bottom: 10px;
 }
 
-label.exp {
-  margin-top: 10px;
-}
-
-label.gold {
-  margin-bottom: 10px;
-}
-
 label.info {
   color: #f0f0f0;
   font-size: 14pt;
-}
-
-label.room-name {
-  margin-top: 12px;
-  font-weight: bold;
-}
-
-label.exit {
-  font-size: 12pt;
 }
