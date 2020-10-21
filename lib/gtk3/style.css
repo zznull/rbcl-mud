@@ -17,6 +17,7 @@
 
 #output-widget {
   font-size: 20px;
+  font-family: Inconsolata, monospace;
 }
 
 #output-widget * {
@@ -100,8 +101,12 @@ label.class {
   margin-bottom: 10px;
 }
 
-label.gold {
+label.exp {
   margin-top: 10px;
+}
+
+label.gold {
+  margin-bottom: 10px;
 }
 
 label.info {

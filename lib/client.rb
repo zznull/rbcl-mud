@@ -2,21 +2,31 @@ require 'rbcl/lib/mud_connection'
 
 module RbCl
   class Client
+    attr_reader :ui
+
     def initialize(ui)
       @ui = ui
       @ui.client = self
       @ui.prompt = '>'
 
-      @last_line = nil
+      @mud_output_buffer = ''
 
-      @map_trigger_start = '<MAPSTART>'
-      @map_trigger_end = '<MAPEND>'
+      @triggers = []
+      @trigger_buffer = ''
+      @current_trigger = nil
+
+      @last_line = nil
+    end
+
+    def self.load(mud_file_path, ui)
+      client = new(ui)
+      eval(File.read(mud_file_path))
     end
 
     def handle_command(cmd)
-      if cmd.strip.start_with?('#')
+      if cmd.strip.start_with?('#') # if this is an internal (client) command
         handle_internal_command(cmd)
-      elsif @connection
+      elsif @connection # this is a command for the mud
         @connection.write(cmd + "\n")
       end
 
@@ -34,7 +44,6 @@ module RbCl
 
     def connection_opened
       @ui.focus_prompt
-      debug('Connection opened')
     end
 
     def connection_closed
@@ -44,35 +53,59 @@ module RbCl
     # process mud output coming from @connection
     # stores last chunk of text that did not contain "\n" for prompt detection
     def process(text)
-      lines = text.split("\n")
-      return if lines.count == 0
+      @mud_output_buffer += text
+      
+      while find_trigger
+        i_start = @mud_output_buffer.index(@current_trigger[:start_str])
+        if i_start
+          @ui.print(@mud_output_buffer[0..i_start - 1])
+          @mud_output_buffer = @mud_output_buffer[i_start + @current_trigger[:start_str].length .. -1]
+        end
 
-      if @last_line
-        lines[0] = @last_line + lines[0]
-        @last_line = nil
-      end
-
-      lines.each_with_index do |line, i|
-        if line.index(@map_trigger_start) # if this line starts the map trigger
-          @ui.print(line[0..line.index(@map_trigger_start) - 1]) if line.index(@map_trigger_start) > 0
-          @map_buffer = line[(line.index(@map_trigger_start) + @map_trigger_start.length)..-1] + "\n"
-        elsif @map_buffer && !line.index(@map_trigger_end) # else if already reading into map buffer and not seeing the end tag
-          @map_buffer += line + "\n"
-        elsif @map_buffer && line.index(@map_trigger_end) # if reading into map buffer and seeing the end tag
-          # read the map until the end and display it
-          @map_buffer += line[0..line.index(@map_trigger_end) - 1]
-          @ui.map_text = @map_buffer
-          @map_buffer = nil
-          
-          l = line[line.index(@map_trigger_end) + @map_trigger_end.length + 1..-1]
-          @ui.print(l.to_s + "\n") # print the remainder of the line, if any
-        elsif !@map_buffer && i == lines.length - 1 && text[-1] != "\n" # if not reading into map buffer and last received line is not terminated by "\n"
-          @last_line = lines[i]
-          @ui.print(@last_line)
+        i_end = find_trigger_end
+        if i_end
+          @trigger_buffer += @mud_output_buffer[0 .. i_end - 1]
+          @current_trigger[:block].call(@trigger_buffer)
+          @trigger_buffer = ''
+          @mud_output_buffer = @mud_output_buffer[i_end + @current_trigger[:end_str].length .. -1]
+          @current_trigger = nil
         else
-          @ui.print(line + "\n")
+          return # reading into trigger, end_str not found, we wait until it arrives
         end
       end
+
+      if @mud_output_buffer.rindex("\n")
+        @ui.print(@mud_output_buffer[0 .. @mud_output_buffer.rindex("\n")])
+        @last_line = @mud_output_buffer[@mud_output_buffer.rindex("\n") .. -1]
+        @mud_output_buffer = ''
+      end
+    end
+
+    # finds first trigger that starts in the buffer
+    def find_trigger
+      return if @current_trigger # we don't support triggers within triggers
+
+      i = @triggers.find_index do |trigger|
+        @mud_output_buffer.index(trigger[:start_str])
+      end
+
+      @current_trigger = @triggers[i] if i
+    end 
+
+    # finds position of the current trigger's end_str
+    def find_trigger_end
+      return unless @current_trigger
+
+      @mud_output_buffer.index(@current_trigger[:end_str])
+    end
+
+    # adds a multiline trigger
+    def add_trigger(start_str, end_str, &block)
+      @triggers << {
+        start_str: start_str,
+        end_str: end_str,
+        block: block
+      }
     end
 
     # prints text to the debug console
@@ -85,7 +118,7 @@ module RbCl
     def go_ahead
       if @last_line && @last_line.strip != ''
         @ui.prompt = @last_line
-        @last_line = ''
+        @last_line = nil
       end
     end
 
@@ -141,6 +174,14 @@ module RbCl
       end
     end
 
+    def map=(text)
+      @ui.map_text = text
+    end
+
+    def show_info=(val)
+      @ui.show_info = val
+    end
+
     protected
 
     def parse_json(json)
@@ -162,7 +203,7 @@ module RbCl
     end
 
     def process_gmcp_channel(data)
-      return if %w(say mobsay).include?(data['chan'])
+      return if %w(say).include?(data['chan'])
       @ui.print(data['msg'] + "\n", data['chan'])
     end
   end

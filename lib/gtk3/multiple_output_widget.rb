@@ -75,8 +75,8 @@ module RbCl
 
         char_width, char_height = @main_output_widget.char_size
 
-        cols = (visible_rect.width - @main_output_widget.parent.vscrollbar.allocated_width) / char_width
-        rows = (visible_rect.height - @main_output_widget.parent.hscrollbar.allocated_height) / char_height
+        cols = visible_rect.width / char_width
+        rows = visible_rect.height / char_height
 
         [cols, rows]
       end

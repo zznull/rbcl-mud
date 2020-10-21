@@ -35,6 +35,7 @@ module RbCl
 
       def prompt=(val)
         @communication_widget.prompt = val
+
       end
 
       def debug(text)
@@ -83,6 +84,14 @@ module RbCl
 
       def map_text=(text)
         @info_widget.map_text = text
+      end
+
+      def show_info=(val)
+        if val
+          @info_widget.show
+        else
+          @info_widget.hide
+        end
       end
     end
   end

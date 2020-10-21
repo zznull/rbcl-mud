@@ -33,6 +33,13 @@ module RbCl
         pack_start(@moves_progress_bar)
         pack_start(@exp_progress_bar)
 
+        @exp_label = Gtk::Label.new
+        @exp_label.style_context.add_provider(css_provider, 800)
+        @exp_label.style_context.add_class('info')
+        @exp_label.style_context.add_class('exp')
+        @exp_label.xalign = 0
+        pack_start(@exp_label)
+
         @gold_label = Gtk::Label.new
         @gold_label.style_context.add_provider(css_provider, 800)
         @gold_label.style_context.add_class('info')
@@ -45,10 +52,6 @@ module RbCl
         @room_name_label.style_context.add_class('info')
         @room_name_label.style_context.add_class('room-name')
         pack_start(@room_name_label)
-
-        # @exits_box = Gtk::Box.new(:vertical)
-        # @exits_box.show
-        # pack_start(@exits_box)
 
         @map_widget = OutputWidget.new
         @map_widget.style_context.add_provider(css_provider, 800)
@@ -64,8 +67,8 @@ module RbCl
       end
 
       def char_status=(status)
-        @exp_progress_bar.value = status['level']
-        @exp_progress_bar.max = status['tnl']
+        @exp_label.markup = "Exp tnl: <span weight=\"bold\">#{status['tnl']}</span>"
+        @exp_label.show
       end
 
       def char_vitals=(vitals)
@@ -83,6 +86,14 @@ module RbCl
       def char_worth=(worth)
         @gold_label.markup = "Gold: <span weight=\"bold\" color=\"gold\">#{worth['gold']}</span> (bank: #{worth['bank']})"
         @gold_label.show
+      end
+
+      def char_exp=(exp)
+        @exp_progress_bar.value = exp
+      end
+
+      def char_max_exp=(max_exp)
+        @exp_progress_bar.max = max_exp
       end
 
       def room_info=(info)

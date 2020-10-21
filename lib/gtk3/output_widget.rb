@@ -30,7 +30,7 @@ module RbCl
         pango_layout = create_pango_layout
         font_description = Pango::FontDescription.new
         font_description.family = 'Inconsolata'
-        font_description.size = 16 * Pango::SCALE
+        font_description.absolute_size = 20 * Pango::SCALE
         pango_layout.font_description = font_description
         pango_layout.text = 'M'
 

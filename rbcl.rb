@@ -15,13 +15,7 @@ module RbCl
         super
 
         @main_window = MainWindow.new(self)
-        @client = Client.new(@main_window.client_widget)
-
-        if $ARGV[0]
-          port = 23
-          port = $ARGV[1].to_i if $ARGV[1] && $ARGV[1] =~ /\A\d+\Z/
-          @client.connect($ARGV[0], port)
-        end
+        @client = Client::load($ARGV[0], @main_window.client_widget)
       end
 
       def run
