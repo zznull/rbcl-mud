@@ -29,12 +29,17 @@ module RbCl
         i.backward_chars(str.length)
 
         current_tags.each do |tag|
+          begin
           apply_tag(tag, i, end_iter)
+            bindign.pry
+          rescue
+          end
         end
 
         true
       end
 
+      # loops through an ansi escape sequence and sets colors based on its contents
       def ansi_sgr(sgr_codes)
         sgr_codes.each do |sgr_code|
           case sgr_code.to_i
@@ -43,6 +48,8 @@ module RbCl
           when 4 then add_sgr_tag('underline')
           when 30..37 then set_sgr_fg(sgr_code)
           when 40..47 then set_sgr_bg(sgr_code)
+          when 5 then break
+          when 6 then break
           when 38 then set_sgr_fg_256(sgr_codes[-1])
           when 48 then set_sgr_bg_256(sgr_codes[-1])
           end
@@ -55,12 +62,14 @@ module RbCl
 
       private
 
+      # adds and ansi color tag to the current sequence
       def add_sgr_tag(name)
         return if @current_sgr_tags.find { |t| t.name == name.to_s }
         tag = tag_table.lookup(name)
         @current_sgr_tags << tag
       end
 
+      # adds an xterm color tag to the current sequence
       def add_sgr_tag_256(name)
         return if @current_sgr_tags.find { |t| t.name == name.to_s }
         tag = tag_table.lookup(name)
@@ -71,31 +80,42 @@ module RbCl
         @current_sgr_tags.delete_if { |tag| tag.name == name.to_s }
       end
 
+      # sets currently printed text fg from ansi colors
       def set_sgr_fg(sgr_code)
-        @current_sgr_tags.delete_if { |tag| tag.name.start_with?('foreground:') }
+        @current_sgr_tags.delete_if { |tag| tag.name.start_with?('foreground') }
         add_sgr_tag("foreground:#{sgr_code}")
       end
 
-      def set_sgr_fg_256(sgr_code)
-        @current_sgr_tags.delete_if { |tag| tag.name.start_with?('foreground:') }
-        add_sgr_tag("foreground_256:#{sgr_code}")
-      end
-
+      # sets currently printed text bg from ansi colors
       def set_sgr_bg sgr_code
-        @current_sgr_tags.delete_if { |tag| tag.name.start_with?('background:') }
+        @current_sgr_tags.delete_if { |tag| tag.name.start_with?('background') }
         add_sgr_tag("background:#{sgr_code}")
       end
 
+      # sets currently printed text fg from xterm colors
+      def set_sgr_fg_256(sgr_code)
+        @current_sgr_tags.delete_if { |tag| tag.name.start_with?('foreground') }
+        add_sgr_tag("foreground_256:#{sgr_code}")
+      end
+
+      # sets currently printed text bg from xterm colors
+      def set_sgr_bg_256(sgr_code)
+        @current_sgr_tags.delete_if { |tag| tag.name.start_with?('background') }
+        add_sgr_tag("background_256:#{sgr_code}")
+      end
       def current_tags
+
         @current_sgr_tags
       end
 
+      # turns #deadbeef into a Gtk::RGBA
       def create_rgba(spec)
         rgba = Gdk::RGBA.new(0, 0, 0, 0)
         rgba.parse(spec)
         rgba
       end
 
+      # creates gtk3 text tags with the standard 16 colors
       def create_tags colors = nil
         @current_sgr_tags = []
 
@@ -126,8 +146,8 @@ module RbCl
         create_tag('underline', 'underline' => Pango::Underline::SINGLE)
       end
 
+      # creates gtk3 fg and bg colors for the 256 xterm colors
       def create_tags_256
-        @current_sgtr_tags_256 = []
         colors = [
           create_rgba('#000000'),
           create_rgba('#800000'),
@@ -387,8 +407,8 @@ module RbCl
           create_rgba('#eeeeee')
         ]
 
-        colors.each_with_index { |color, i| create_tag("foreground_256:#{i}", 'foreground_rgba' => color) }
-        colors.each_with_index { |color, i| create_tag("background_256:#{i}", 'background_rgba' => color) }
+        colors.each_with_index { |color, i| create_tag("foreground_256:#{i.to_s.rjust(3, '0')}", 'foreground_rgba' => color) }
+        colors.each_with_index { |color, i| create_tag("background_256:#{i.to_s.rjust(3, '0')}", 'background_rgba' => color) }
       end
 
       def limit_line_count
