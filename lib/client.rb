@@ -29,6 +29,7 @@ module RbCl
     def handle_command(cmd)
       if cmd.strip.start_with?('#') # if this is an internal (client) command
         handle_internal_command(cmd)
+        return
       elsif @connection # this is a command for the mud
         @connection.write(cmd + "\n")
       end
@@ -177,6 +178,12 @@ module RbCl
       case components[0]
       when 'gmcp'
         @connection.send_gmcp(components[1], components[2..-1].join(' '))
+      when 'connect'
+        if components.length >= 2 && components.length <= 3
+          connect(components[1], components[2] ? components[2].to_i : 23)
+        else
+          @ui.print("Syntax: \#connect host [port]\n")
+        end
       end
     end
 
