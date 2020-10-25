@@ -29,11 +29,7 @@ module RbCl
         i.backward_chars(str.length)
 
         current_tags.each do |tag|
-          begin
           apply_tag(tag, i, end_iter)
-            bindign.pry
-          rescue
-          end
         end
 
         true
@@ -48,8 +44,8 @@ module RbCl
           when 4 then add_sgr_tag('underline')
           when 30..37 then set_sgr_fg(sgr_code)
           when 40..47 then set_sgr_bg(sgr_code)
-          when 5 then break
-          when 6 then break
+          when 5 then
+          when 6 then
           when 38 then set_sgr_fg_256(sgr_codes[-1])
           when 48 then set_sgr_bg_256(sgr_codes[-1])
           end
@@ -83,13 +79,13 @@ module RbCl
       # sets currently printed text fg from ansi colors
       def set_sgr_fg(sgr_code)
         @current_sgr_tags.delete_if { |tag| tag.name.start_with?('foreground') }
-        add_sgr_tag("foreground:#{sgr_code}")
+        add_sgr_tag("foreground:#{sgr_code.to_i}")
       end
 
       # sets currently printed text bg from ansi colors
       def set_sgr_bg sgr_code
         @current_sgr_tags.delete_if { |tag| tag.name.start_with?('background') }
-        add_sgr_tag("background:#{sgr_code}")
+        add_sgr_tag("background:#{sgr_code.to_i}")
       end
 
       # sets currently printed text fg from xterm colors
