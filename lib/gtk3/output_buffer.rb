@@ -37,7 +37,10 @@ module RbCl
 
       # loops through an ansi escape sequence and sets colors based on its contents
       def ansi_sgr(sgr_codes)
-        sgr_codes.each do |sgr_code|
+        i = 0
+        while i < sgr_codes.length
+          sgr_code = sgr_codes[i]
+
           case sgr_code.to_i
           when 0 then @current_sgr_tags = []
           when 1 then add_sgr_tag('bold')
@@ -46,9 +49,11 @@ module RbCl
           when 40..47 then set_sgr_bg(sgr_code)
           when 5 then
           when 6 then
-          when 38 then set_sgr_fg_256(sgr_codes[-1])
-          when 48 then set_sgr_bg_256(sgr_codes[-1])
+          when 38 then set_sgr_fg_256(sgr_codes[i + 2]); i += 2
+          when 48 then set_sgr_bg_256(sgr_codes[i + 2]); i += 2
           end
+
+          i += 1
         end
       end
 
