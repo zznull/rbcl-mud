@@ -15,7 +15,11 @@ module RbCl
         super
 
         @main_window = MainWindow.new(self)
-        @client = Client::load($ARGV[0], @main_window.client_widget)
+        if $ARGV.count == 1
+          @client = Client::load($ARGV[0], @main_window.client_widget)
+        else
+          @client = Client.new(@main_window.client_widget)
+        end
       end
 
       def run
