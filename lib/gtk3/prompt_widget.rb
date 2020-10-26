@@ -89,11 +89,11 @@ module RbCl
       end
 
       def key_pressed(event)
-        if event.keyval == Gdk::Keyval::KEY_Up
+        if event.keyval == Gdk::Keyval::KEY_Up || (event.keyval == Gdk::Keyval::KEY_p && event.state & Gdk::ModifierType::CONTROL_MASK != 0)
           history_back
           grab_focus
           return true # prevent from propagating further
-        elsif event.keyval == Gdk::Keyval::KEY_Down
+        elsif event.keyval == Gdk::Keyval::KEY_Down || (event.keyval == Gdk::Keyval::KEY_n && event.state & Gdk::ModifierType::CONTROL_MASK != 0)
           history_forward
           grab_focus
           return true # prevent from propagating further
