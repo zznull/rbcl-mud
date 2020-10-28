@@ -67,14 +67,14 @@ module RbCl
       def add_sgr_tag(name)
         return if @current_sgr_tags.find { |t| t.name == name.to_s }
         tag = tag_table.lookup(name)
-        @current_sgr_tags << tag
+        @current_sgr_tags << tag if tag
       end
 
       # adds an xterm color tag to the current sequence
       def add_sgr_tag_256(name)
         return if @current_sgr_tags.find { |t| t.name == name.to_s }
         tag = tag_table.lookup(name)
-        @current_sgr_tags << tag
+        @current_sgr_tags << tag if tag
       end
 
       def remove_sgr_tag(name)

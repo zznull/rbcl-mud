@@ -20,6 +20,11 @@
   font-family: Inconsolata, monospace;
 }
 
+#output-widget selection {
+  color: #404040;
+  background-color: #e0e0e0;
+}
+
 #output-widget * {
   background-color: #000000;
   color: #eeeeee;
