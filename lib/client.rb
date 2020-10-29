@@ -44,6 +44,8 @@ module RbCl
     def connect(host, port = 23)
       @ui.print("Connecting to #{host}:#{port}\n")
       @connection = MudConnection.new(host, port, self)
+    rescue Gio::IOError::NetworkUnreachable
+      @ui.print("Failed to connect to #{host}: Network unreachable")
     end
 
     def connection_opened

@@ -16,10 +16,19 @@ module RbCl
 
         @main_window = MainWindow.new(self)
         if $ARGV.count == 1
-          @client = Client::load($ARGV[0], @main_window.client_widget)
+          begin
+            @client = Client::load($ARGV[0], @main_window.client_widget)
+          rescue Errno::ENOENT
+            puts "File not found: #{$ARGV[0]}"
+            exit 1
+          end
         else
           @client = Client.new(@main_window.client_widget)
         end
+
+      rescue Gio::ResolverError::NotFound
+        puts "Could not resolve address"
+        exit 1
       end
 
       def run
