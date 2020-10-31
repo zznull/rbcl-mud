@@ -31,12 +31,12 @@ module RbCl
         return if @output_widgets[name]
 
         output_widget = OutputWidget.new
-        output_widget.style_context.add_provider(css_provider, 800)
+        add_css_provider(output_widget.style_context)
         output_widget.show
 
         output_scrolled_window = Gtk::ScrolledWindow.new
         output_scrolled_window.set_name('output-widget-container')
-        output_scrolled_window.style_context.add_provider(css_provider, 800)
+        add_css_provider(output_scrolled_window.style_context)
         output_scrolled_window.set_policy(Gtk::PolicyType::NEVER, Gtk::PolicyType::ALWAYS)
 
         output_scrolled_window.signal_connect('scroll-event') do |widget|

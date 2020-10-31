@@ -14,14 +14,14 @@ module RbCl
 
         @progress_bar = Gtk::ProgressBar.new
         @progress_bar.style_context.add_class(css_class)
-        @progress_bar.style_context.add_provider(css_provider, 800)
+        add_css_provider(@progress_bar.style_context)
         @progress_bar.show
 
         add(@progress_bar)
 
         @label = Gtk::Label.new
         @label.style_context.add_class('progress-bar')
-        @label.style_context.add_provider(css_provider, 800)
+        add_css_provider(@label.style_context)
         @label.show
 
         add_overlay(@label)

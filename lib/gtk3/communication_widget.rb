@@ -28,7 +28,7 @@ module RbCl
         @multiple_output_widget.on_tab_switch { focus_prompt }
 
         @prompt_widget = PromptWidget.new
-        @prompt_widget.style_context.add_provider(css_provider, 800)
+        add_css_provider(@prompt_widget.style_context)
 
         @prompt_widget.on_enter do |command|
           @client.handle_command(command)

@@ -14,6 +14,10 @@ module RbCl
         style_context.add_provider(@@css_provider, 800)
       end
 
+      def add_css_provider(style_context)
+        style_context.add_provider(css_provider, 800)
+      end
+
       def css_provider
         @@css_provider
       end

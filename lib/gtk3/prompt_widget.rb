@@ -15,23 +15,23 @@ module RbCl
 
         @output_widget = OutputWidget.new
         @output_widget.set_name('output-widget')
-        @output_widget.style_context.add_provider(css_provider, 800)
+        add_css_provider(@output_widget.style_context)
         @output_widget.set_editable(false)
         @output_widget.set_cursor_visible(false)
         @output_widget.set_wrap_mode(Gtk::WrapMode::NONE)
         @output_widget.set_margin_top(7)
         @output_widget.show
+
         pack_start(@output_widget, expand: false, fill: false)
 
         @input = Gtk::Entry.new
         @input.set_name('input')
-        @input.style_context.add_provider(css_provider, 800)
+        add_css_provider(@input.style_context)
 
         font_description = Pango::FontDescription.new
         font_description.family = 'Inconsolata'
         font_description.size = 16 * Pango::SCALE
         @input.override_font(font_description)
-
         @input.show
 
         @input.signal_connect('activate') { command_entered }

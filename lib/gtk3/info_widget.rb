@@ -14,12 +14,12 @@ module RbCl
         load_css
 
         @name_label = Gtk::Label.new
-        @name_label.style_context.add_provider(css_provider, 800)
+        add_css_provider(@name_label.style_context)
         @name_label.style_context.add_class('name')
         pack_start(@name_label)
 
         @class_label = Gtk::Label.new
-        @class_label.style_context.add_provider(css_provider, 800)
+        add_css_provider(@class_label.style_context)
         @class_label.style_context.add_class('class')
         pack_start(@class_label)
 
@@ -38,14 +38,8 @@ module RbCl
         @labels_box.show
         pack_start(@labels_box)
 
-        @room_name_label = Gtk::Label.new
-        @room_name_label.style_context.add_provider(css_provider, 800)
-        @room_name_label.style_context.add_class('info')
-        @room_name_label.style_context.add_class('room-name')
-        pack_start(@room_name_label)
-
         @map_widget = OutputWidget.new
-        @map_widget.style_context.add_provider(css_provider, 800)
+                add_css_provider(@map_widget.style_context)
         @map_widget.style_context.add_class('map')
         pack_start(@map_widget)
       end
@@ -59,7 +53,7 @@ module RbCl
 
       def add_label(name)
         label = Gtk::Label.new
-        label.style_context.add_provider(css_provider, 800)
+        add_css_provider(label.style_context)
         label.style_context.add_class('info')
         label.xalign = 0
         @labels[name] = label
