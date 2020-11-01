@@ -78,6 +78,10 @@ module RbCl
         @info_widget.map_text = text
       end
 
+      def room_info=(data)
+        @info_widget.room_info = data
+      end
+
       def show_info=(val)
         if val
           @info_widget.show

@@ -170,6 +170,8 @@ module RbCl
         @ui.char_maxstats = data
       when 'char.base'
         @ui.char_base = data
+      when 'room.info'
+        @ui.room_info = data
       end
 
       @gmcp_triggers[package.downcase].call(data) if @gmcp_triggers[package.downcase]

@@ -6,9 +6,6 @@
   background-color: #000000;
 }
 
-#info-widget {
-}
-
 #multiple-output-widget {
   border-right-color: #000000;
   border-bottom-color: #000000;
@@ -44,10 +41,10 @@
 #prompt-widget #input {
   background: #000000;
   color: #a0a0a0;
-  -GtkView-cursor-color: #ffffff;
   border: none;
   box-shadow: none;
   font-size: 20px;
+  caret-color: #e0e0e0;
 }
 
 #output-widget *:selected, #prompt-widget #input:selected {
@@ -109,4 +106,10 @@ label.class {
 label.info {
   color: #f0f0f0;
   font-size: 14pt;
+}
+
+label#room {
+  color: #e0e0e0;
+  margin-top: 16pt;
+  font-size: 16pt;
 }

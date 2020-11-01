@@ -38,8 +38,14 @@ module RbCl
         @labels_box.show
         pack_start(@labels_box)
 
+        @room_name_label = Gtk::Label.new
+        add_css_provider(@room_name_label.style_context)
+        @room_name_label.style_context.add_class('info')
+        @room_name_label.name = 'room'
+        pack_start(@room_name_label)
+
         @map_widget = OutputWidget.new
-                add_css_provider(@map_widget.style_context)
+        add_css_provider(@map_widget.style_context)
         @map_widget.style_context.add_class('map')
         pack_start(@map_widget)
       end
@@ -83,6 +89,11 @@ module RbCl
         @map_widget.clear
         @map_widget.print(text)
         @map_widget.show
+      end
+
+      def room_info=(data)
+        @room_name_label.text = data['name']
+        @room_name_label.show
       end
     end
   end
