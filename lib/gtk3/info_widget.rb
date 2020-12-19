@@ -1,6 +1,6 @@
-require 'rbcl/lib/gtk3/css_support'
-require 'rbcl/lib/gtk3/progress_bar'
-require 'rbcl/lib/gtk3/output_widget'
+require 'lib/gtk3/css_support'
+require 'lib/gtk3/progress_bar'
+require 'lib/gtk3/output_widget'
 
 module RbCl
   module UI

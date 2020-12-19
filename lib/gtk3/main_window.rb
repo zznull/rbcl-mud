@@ -1,6 +1,6 @@
-require 'rbcl/lib/gtk3/client_widget'
-require 'rbcl/lib/client'
-require 'rbcl/lib/gtk3/css_support'
+require 'lib/gtk3/client_widget'
+require 'lib/client'
+require 'lib/gtk3/css_support'
 
 module RbCl
   module UI

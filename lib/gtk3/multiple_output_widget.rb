@@ -1,7 +1,7 @@
 require 'pry'
 
-require 'rbcl/lib/gtk3/output_widget'
-require 'rbcl/lib/gtk3/css_support'
+require 'lib/gtk3/output_widget'
+require 'lib/gtk3/css_support'
 
 module RbCl
   module UI

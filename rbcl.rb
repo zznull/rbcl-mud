@@ -3,10 +3,10 @@
 require 'rubygems'
 require 'bundler/setup'
 
-$: << File.expand_path(File.dirname(__FILE__) + "/../")
+$: << File.expand_path(File.dirname(__FILE__))
 
 require 'gtk3'
-require 'rbcl/lib/gtk3/main_window'
+require 'lib/gtk3/main_window'
 
 module RbCl
   module UI

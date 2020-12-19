@@ -1,4 +1,4 @@
-require 'rbcl/lib/mud_connection'
+require 'lib/mud_connection'
 
 module RbCl
   class Client

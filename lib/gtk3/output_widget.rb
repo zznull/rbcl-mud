@@ -1,5 +1,5 @@
-require 'rbcl/lib/gtk3/output_buffer'
-require 'rbcl/lib/ansi_printer'
+require 'lib/gtk3/output_buffer'
+require 'lib/ansi_printer'
 
 module RbCl
   module UI

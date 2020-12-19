@@ -1,5 +1,5 @@
 require 'zlib'
-require 'rbcl/lib/connection'
+require 'lib/connection'
 require 'json'
 
 module RbCl

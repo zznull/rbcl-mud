@@ -1,8 +1,8 @@
 require 'glib2'
 
-require 'rbcl/lib/gtk3/multiple_output_widget'
-require 'rbcl/lib/gtk3/prompt_widget'
-require 'rbcl/lib/gtk3/css_support'
+require 'lib/gtk3/multiple_output_widget'
+require 'lib/gtk3/prompt_widget'
+require 'lib/gtk3/css_support'
 
 module RbCl
   module UI
