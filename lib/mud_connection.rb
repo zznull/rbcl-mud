@@ -43,8 +43,8 @@ module RbCl
     end
 
     def send_gmcp(package, message)
-      log(">IAC SB GMCP #{package} #{message}")
-      send_seq(IAC + SB + GMCP + package + ' ' + message)
+      log(">IAC SB GMCP #{package} #{message} IAC SE")
+      send_seq(IAC + SB + GMCP + package + ' ' + message + IAC + SE)
     end
 
     private
@@ -129,7 +129,7 @@ module RbCl
       when MCCP
         send_seq(IAC + DO + MCCP)
       when ATCP
-        send_seq(IAC + DO + ATCP)
+        send_seq(IAC + DONT + ATCP)
       when GMCP
         send_seq(IAC + DO + GMCP)
         send_gmcp_capabilities
@@ -212,8 +212,13 @@ module RbCl
         @client.process_atcp(data)
       when GMCP
         i_space = @buffer.index(' ')
-        package = @buffer[3..i_space - 1]
-        data = @buffer[i_space + 1..i_end - 1]
+        if i_space
+          package = @buffer[3..i_space - 1]
+          data = @buffer[i_space + 1..i_end - 1]
+        else
+          package = @buffer[3..i_end - 1]
+          data = nil
+        end
         @client.process_gmcp(package, data)
       end
 
@@ -249,7 +254,8 @@ module RbCl
     end
 
     def send_gmcp_capabilities
-      send_gmcp('Core.Supports.Set', JSON.dump(['Debug 1', 'Char 1', 'Comm 1', 'Room 1']))
+      send_gmcp('Core.Hello', JSON.dump(Client: 'RbCl', Version: '0.1'))
+      send_gmcp('Core.Supports.Set', JSON.dump(['Char 1']))
     end
 
     def log(str)

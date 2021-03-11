@@ -151,15 +151,11 @@ module RbCl
       @connection.send_window_size(size) if @connection
     end
 
-    def process_atcp(data)
-      debug("ATCP #{data}")
-    end
-
-    def process_gmcp(package, json)
+    def process_gmcp(package, json = nil)
       debug("GMCP #{package}")
-      debug(json)
+      debug(json) if json
 
-      data = parse_json(json)
+      data = parse_json(json) if json
 
       case package.downcase
       when 'comm.channel'
