@@ -62,24 +62,8 @@ module RbCl
         @communication_widget.hide_prompt_text(val)
       end
 
-      def char_vitals=(data)
-        @info_widget.char_vitals = data
-      end
-
-      def char_maxstats=(data)
-        @info_widget.char_maxstats = data
-      end
-
-      def char_base=(data)
-        @info_widget.char_base = data
-      end
-
       def map_text=(text)
         @info_widget.map_text = text
-      end
-
-      def room_info=(data)
-        @info_widget.room_info = data
       end
 
       def show_info=(val)

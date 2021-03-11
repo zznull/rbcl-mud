@@ -44,10 +44,13 @@ module RbCl
         pack_start(@map_widget)
       end
 
-      def char_base=(base)
-        @name_label.text = base['name']
+      def char_name=(name)
+        @name_label.text = name
         @name_label.show
-        @class_label.text = base['class'] + ' (Lvl ' + base['level'].to_s + ')'
+      end
+
+      def set_char_class_level(class_name, level)
+        @class_label.text = class_name + ' ' + level.to_s
         @class_label.show
       end
 
@@ -67,16 +70,24 @@ module RbCl
         end
       end
 
-      def char_vitals=(vitals)
-        @health_progress_bar.value = vitals['hp'] if vitals['hp']
-        @mana_progress_bar.value = vitals['mana'] if vitals['mana']
-        @moves_progress_bar.value = vitals['moves'] if vitals['moves']
+      def set_health(hp, maxhp)
+        @health_progress_bar.value = hp.to_i
+        @health_progress_bar.max = maxhp.to_i
       end
 
-      def char_maxstats=(maxstats)
-        @health_progress_bar.max = maxstats['maxhp'] if maxstats['maxhp']
-        @mana_progress_bar.max = maxstats['maxmana'] if maxstats['maxmana']
-        @moves_progress_bar.max = maxstats['maxmoves'] if maxstats['maxmoves']
+      def set_mana(mp, maxmp)
+        @mana_progress_bar.value = mp.to_i
+        @mana_progress_bar.max = maxmp.to_i
+      end
+
+      def set_moves(ep, maxep)
+        @moves_progress_bar.value = ep.to_i
+        @moves_progress_bar.max = maxep.to_i
+      end
+
+      def set_exp(exp, tnl)
+        @exp_progress_bar.value = exp.to_i
+        @exp_progress_bar.max = tnl.to_i
       end
 
       def map_text=(text)

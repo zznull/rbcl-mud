@@ -160,14 +160,6 @@ module RbCl
       case package.downcase
       when 'comm.channel'
         process_gmcp_channel(data)
-      when 'char.vitals'
-        @ui.char_vitals = data
-      when 'char.maxstats'
-        @ui.char_maxstats = data
-      when 'char.base'
-        @ui.char_base = data
-      when 'room.info'
-        @ui.room_info = data
       end
 
       @gmcp_triggers[package.downcase].call(data) if @gmcp_triggers[package.downcase]

@@ -97,19 +97,13 @@ label.name {
   font-size: 16pt;
 }
 
-label.class {
-  color: #f0f0f0;
-  font-size: 14pt;
-  margin-bottom: 10px;
-}
-
 label.info {
   color: #f0f0f0;
   font-size: 14pt;
 }
 
-label#room {
-  color: #e0e0e0;
-  margin-top: 16pt;
-  font-size: 16pt;
+label.class {
+  color: #f0f0f0;
+  font-size: 14pt;
+  margin-bottom: 0.5em;
 }
