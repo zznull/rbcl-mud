@@ -82,7 +82,7 @@ module RbCl
 
       if @mud_output_buffer.rindex("\n") && @buffer_last_line
         @ui.print(@mud_output_buffer[0 .. @mud_output_buffer.rindex("\n")])
-        @last_line = @mud_output_buffer[@mud_output_buffer.rindex("\n") .. -1]
+        @last_line = @mud_output_buffer[@mud_output_buffer.rindex("\n") .. -1].strip
       else
         @ui.print(@mud_output_buffer)
       end

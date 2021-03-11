@@ -125,6 +125,7 @@ module RbCl
         send_seq(IAC + DO + ECHO)
         @client.suppress_echo(true)
       when END_OF_RECORD
+        @client.buffer_last_line = true
         send_seq(IAC + DO + END_OF_RECORD)
       when MCCP
         send_seq(IAC + DO + MCCP)
