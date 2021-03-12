@@ -57,8 +57,6 @@ module RbCl
         @buffer = @buffer + data
       end
 
-      # print @buffer
-
       loop do
         i_iac = @buffer.index(IAC)
         if i_iac.nil?

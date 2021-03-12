@@ -65,15 +65,28 @@ module RbCl
         i_start = @mud_output_buffer.index(@current_trigger[:start_str])
         if i_start
           @ui.print(@mud_output_buffer[0..i_start - 1])
-          @mud_output_buffer = @mud_output_buffer[i_start + @current_trigger[:start_str].length .. -1]
+
+          if @current_trigger[:start_str].is_a? String
+            @mud_output_buffer = @mud_output_buffer[i_start + @current_trigger[:start_str].length .. -1]
+          elsif @current_trigger[:start_str].is_a? Regexp
+            m = @mud_output_buffer.match(@current_trigger[:start_str])
+            @mud_output_buffer = @mud_output_buffer[i_start + m[0].length .. -1]
+          end
         end
 
-        i_end = find_trigger_end
+        i_end = find_trigger_end()
+
         if i_end
           @trigger_buffer += @mud_output_buffer[0 .. i_end - 1]
           @current_trigger[:block].call(@trigger_buffer)
           @trigger_buffer = ''
-          @mud_output_buffer = @mud_output_buffer[i_end + @current_trigger[:end_str].length .. -1]
+
+          if @current_trigger[:end_str].is_a? String
+            @mud_output_buffer = @mud_output_buffer[i_end + @current_trigger[:end_str].length .. -1]
+          elsif @current_trigger[:end_str].is_a? Regexp
+            m = @mud_output_buffer[i_end .. -1].match(@current_trigger[:end_str])
+            @mud_output_buffer = @mud_output_buffer[i_end + m[0].length .. -1] if m
+          end
           @current_trigger = nil
         else
           return # reading into trigger, end_str not found, we wait until it arrives
@@ -102,7 +115,7 @@ module RbCl
     end 
 
     # finds position of the current trigger's end_str
-    def find_trigger_end
+    def find_trigger_end()
       return unless @current_trigger
 
       @mud_output_buffer.index(@current_trigger[:end_str])
