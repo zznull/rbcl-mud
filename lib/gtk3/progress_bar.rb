@@ -5,7 +5,7 @@ module RbCl
     class ProgressBar < Gtk::Overlay
       include CssSupport
 
-      def initialize(css_class)
+      def initialize(css_class, color)
         super()
 
         set_name 'dbg'
@@ -15,6 +15,11 @@ module RbCl
         @progress_bar = Gtk::ProgressBar.new
         @progress_bar.style_context.add_class(css_class)
         add_css_provider(@progress_bar.style_context)
+
+        bg_css_provider = Gtk::CssProvider.new
+        bg_css_provider.load_from_data("progressbar progress { background-color: #{color}; }")
+        @progress_bar.style_context.add_provider(bg_css_provider, 800)
+
         @progress_bar.show
 
         add(@progress_bar)
@@ -22,18 +27,19 @@ module RbCl
         @label = Gtk::Label.new
         @label.style_context.add_class('progress-bar')
         add_css_provider(@label.style_context)
+
         @label.show
 
         add_overlay(@label)
       end
 
       def value=(val)
-        @value = val.dup
+        @value = val.dup.to_i
         update
       end
 
       def max=(val)
-        @max = val.dup
+        @max = val.dup.to_i
         update
       end
 

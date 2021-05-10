@@ -65,21 +65,6 @@ progressbar progress {
   border: none;
 }
 
-progressbar.health progress {
-  background-color: #bb0000;
-}
-
-progressbar.mana progress {
-  background-color: #0000aa;
-}
-
-progressbar.moves progress {
-  background-color: #00aa00;
-}
-
-progressbar.exp progress {
-  background-color: #cccccc;
-}
 
 progressbar trough {
   min-height: 30px;

@@ -23,15 +23,10 @@ module RbCl
         @class_label.style_context.add_class('class')
         pack_start(@class_label)
 
-        @health_progress_bar = ProgressBar.new('health')
-        @mana_progress_bar = ProgressBar.new('mana')
-        @moves_progress_bar = ProgressBar.new('moves')
-        @exp_progress_bar = ProgressBar.new('exp')
-
-        pack_start(@health_progress_bar)
-        pack_start(@mana_progress_bar)
-        pack_start(@moves_progress_bar)
-        pack_start(@exp_progress_bar)
+        @progress_bars = {}
+        @progress_bars_box = Gtk::Box.new(:vertical)
+        @progress_bars_box.show
+        pack_start(@progress_bars_box)
 
         @labels = {}
         @labels_box = Gtk::Box.new(:vertical)
@@ -70,24 +65,15 @@ module RbCl
         end
       end
 
-      def set_health(hp, maxhp)
-        @health_progress_bar.value = hp.to_i
-        @health_progress_bar.max = maxhp.to_i
+      def add_progress_bar(name, color)
+        progress_bar = ProgressBar.new('health', color)
+        @progress_bars_box.pack_start(progress_bar)
+        @progress_bars[name] = progress_bar
       end
 
-      def set_mana(mp, maxmp)
-        @mana_progress_bar.value = mp.to_i
-        @mana_progress_bar.max = maxmp.to_i
-      end
-
-      def set_moves(ep, maxep)
-        @moves_progress_bar.value = ep.to_i
-        @moves_progress_bar.max = maxep.to_i
-      end
-
-      def set_exp(exp, tnl)
-        @exp_progress_bar.value = exp.to_i
-        @exp_progress_bar.max = tnl.to_i
+      def set_progress_bar(name, value, max)
+        @progress_bars[name].value = value
+        @progress_bars[name].max = max
       end
 
       def map_text=(text)
